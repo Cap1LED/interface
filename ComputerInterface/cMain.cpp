@@ -7,6 +7,8 @@ EVT_SLIDER(7, cMain::OnBright3Update)
 EVT_SLIDER(9, cMain::OnBright4Update)
 EVT_SLIDER(11, cMain::OnBright5Update)
 
+// This is a test
+
 wxEND_EVENT_TABLE()
 
 
