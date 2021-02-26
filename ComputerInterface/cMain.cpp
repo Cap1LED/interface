@@ -1,11 +1,11 @@
 #include "cMain.h"
 
 wxBEGIN_EVENT_TABLE(cMain, wxFrame)
-EVT_SLIDER(1, OnBright1Update)
-EVT_SLIDER(5, OnBright2Update)
-EVT_SLIDER(7, OnBright3Update)
-EVT_SLIDER(9, OnBright4Update)
-EVT_SLIDER(11, OnBright5Update)
+EVT_SLIDER(1, cMain::OnBright1Update)
+EVT_SLIDER(5, cMain::OnBright2Update)
+EVT_SLIDER(7, cMain::OnBright3Update)
+EVT_SLIDER(9, cMain::OnBright4Update)
+EVT_SLIDER(11, cMain::OnBright5Update)
 
 wxEND_EVENT_TABLE()
 
