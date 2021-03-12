@@ -10,6 +10,7 @@ EVT_SLIDER(7, cMain::OnBright3Update)
 EVT_SLIDER(9, cMain::OnBright4Update)
 EVT_SLIDER(11, cMain::OnBright5Update)
 EVT_BUTTON(103, cMain::OnSaveClick)
+EVT_BUTTON(102, cMain::OnRecordClick)
 
 wxEND_EVENT_TABLE()
 
@@ -87,4 +88,11 @@ void cMain::OnSaveClick(wxCommandEvent& evt) {
 	Close(TRUE);
 	
 
+}
+
+void cMain::OnRecordClick(wxCommandEvent& evt) {
+	Event event;
+	event.DataIn();
+
+	Close(TRUE);
 }

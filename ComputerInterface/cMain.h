@@ -43,7 +43,7 @@ public:
 	void OnBright4Update(wxCommandEvent& evt);
 	void OnBright5Update(wxCommandEvent& evt);
 	void OnSaveClick(wxCommandEvent& evt);
-
+	void OnRecordClick(wxCommandEvent& evt);
 	
 	wxDECLARE_EVENT_TABLE();
 };
