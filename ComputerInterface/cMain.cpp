@@ -4,6 +4,7 @@
 #include <fstream>
 #include <string>
 #include <ctime>
+#include <iostream>
 using namespace std;
 
 
@@ -135,10 +136,10 @@ void cMain::SaveToCSV(vector<string> data) {
 
 	char buffer[80];
 	strftime(buffer, 80, "%Y-%m-%d.", now);
-	filename = "Solar Data " + (string)buffer + ".csv";
-	outdata.open("C:\\Users\\kitsu\\Desktop\\");// + filename);
+	filename = "Solar Data.csv";
+	outdata.open("C:\\Users\\kitsu\\Desktop\\" + filename);
 	for (int i = 0; i < (int)data.size(); i++) {
-		cout << data[i] << endl;
+		outdata << data[i] << endl;
 	}
 	outdata.close();
 
