@@ -98,7 +98,7 @@ void cMain::OnSaveClick(wxCommandEvent& evt) {
 
 void cMain::OnRecordClick(wxCommandEvent& evt) {
 	Event event;
-	event.DataIn();
+	event.DataIn(m_data);
 
 	Close(TRUE);
 }
