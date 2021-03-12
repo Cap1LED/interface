@@ -22,6 +22,6 @@ void Event::DataIn() {
 	}
 }
 
-void Event::SaveToCSV() {
+void Event::SaveToCSV(vector<string> data) {
 
 }
