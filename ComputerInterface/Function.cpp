@@ -18,9 +18,12 @@ void Event::DataIn(wxListBox* listbox) {
 	if (indata.is_open()) {
 		string temp;
 		while (getline(indata, temp)) {
-			
+			wxString add(temp);
+			listbox->Append(add);
 		}
+		indata.close();
 	}
+
 }
 
 void Event::SaveToCSV(vector<string> data) {
