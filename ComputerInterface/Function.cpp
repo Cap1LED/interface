@@ -6,10 +6,11 @@
 
 using namespace std;
 
-void Event::DataIn() {
+void Event::DataIn(wxListBox* listbox) {
 	ifstream indata;
 	uint8_t buffer;
 	std::vector<uint8_t> DATAVECTOR;
+	std::vector<string> LISTBOXIN;
 	indata.open("test_file.txt");
 	if (!indata) {
 		cout << "Could not open file." << endl;

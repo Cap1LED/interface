@@ -2,11 +2,13 @@
 #define FUNCTION_H
 
 #include<string>
+#include "wx/wx.h"
+#include "cMain.h"
 
 class Event {
 
 public:
-	void DataIn();
+	void DataIn(wxListBox* listbox);
 	void SaveToCSV(std::vector<std::string>);
 
 };
