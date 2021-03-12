@@ -1,5 +1,7 @@
 #include "cMain.h"
 
+
+
 wxBEGIN_EVENT_TABLE(cMain, wxFrame)
 EVT_SLIDER(1, cMain::OnBright1Update)
 EVT_SLIDER(5, cMain::OnBright2Update)
