@@ -21,7 +21,7 @@
     <ClInclude Include="cApp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DataIn.h">
+    <ClInclude Include="Function.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

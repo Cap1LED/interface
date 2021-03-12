@@ -21,7 +21,7 @@
   <ItemGroup>
     <ClInclude Include="cApp.h" />
     <ClInclude Include="cMain.h" />
-    <ClInclude Include="DataIn.h" />
+    <ClInclude Include="Function.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cApp.cpp" />
