@@ -1,9 +1,11 @@
 #ifndef FUNCTION_H
 #define FUNCTION_H
 
-class events {
+class Event {
 
-
+public:
+	void DataIn();
+	void SaveToCSV();
 
 };
 
