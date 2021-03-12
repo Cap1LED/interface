@@ -1,5 +1,4 @@
 #include "cMain.h"
-#include "Function.h"
 #include <vector>
 #include <string>
 #include <fstream>
@@ -89,13 +88,13 @@ void cMain::OnBright5Update(wxCommandEvent& evt) {
 }
 
 void cMain::OnSaveClick(wxCommandEvent& evt) {
-	Event event;
+
 	std::vector<std::string> data;
 	double listsize = (double)m_data->GetCount();
 	for (int i = 0; i < listsize; i++) {
 		data.push_back((std::string)m_data->GetString(i));
 	}
-	event.SaveToCSV(data);
+	SaveToCSV(data);
 
 	//Close(TRUE);
 	
@@ -103,8 +102,8 @@ void cMain::OnSaveClick(wxCommandEvent& evt) {
 }
 
 void cMain::OnRecordClick(wxCommandEvent& evt) {
-	Event event;
-	event.DataIn(m_data);
+	
+	DataIn(m_data);
 	
 }
 
