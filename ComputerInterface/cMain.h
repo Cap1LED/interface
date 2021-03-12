@@ -1,5 +1,7 @@
 #pragma once
 #include "wx/wx.h"
+#include <vector>
+#include <string>
 class cMain : public wxFrame
 {
 
@@ -44,6 +46,8 @@ public:
 	void OnBright5Update(wxCommandEvent& evt);
 	void OnSaveClick(wxCommandEvent& evt);
 	void OnRecordClick(wxCommandEvent& evt);
+	void DataIn(wxListBox* listbox);
+	void SaveToCSV(std::vector<std::string> data);
 	
 	wxDECLARE_EVENT_TABLE();
 };

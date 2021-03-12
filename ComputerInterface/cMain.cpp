@@ -20,8 +20,7 @@ EVT_BUTTON(102, cMain::OnRecordClick)
 
 wxEND_EVENT_TABLE()
 
-void DataIn(wxListBox* listbox);
-void SaveToCSV(vector<string> data);
+
 
 
 
@@ -109,7 +108,7 @@ void cMain::OnRecordClick(wxCommandEvent& evt) {
 	
 }
 
-void DataIn(wxListBox* listbox) {
+void cMain::DataIn(wxListBox* listbox) {
 	ifstream indata;
 	//uint8_t buffer;
 	std::vector<uint8_t> DATAVECTOR;
@@ -129,7 +128,7 @@ void DataIn(wxListBox* listbox) {
 
 }
 
-void SaveToCSV(vector<string> data) {
+void cMain::SaveToCSV(vector<string> data) {
 	ofstream outdata;
 	string filename;
 	time_t t = time(0);   // get time now
