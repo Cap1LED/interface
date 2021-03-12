@@ -42,8 +42,9 @@ public:
 	void OnBright3Update(wxCommandEvent& evt);
 	void OnBright4Update(wxCommandEvent& evt);
 	void OnBright5Update(wxCommandEvent& evt);
+	void OnSaveClick(wxCommandEvent& evt);
 
-	/*void OnTextEnter( wxEVT_COMMAND_TEXT_UPDATED & evt);*/
+	
 	wxDECLARE_EVENT_TABLE();
 };
 

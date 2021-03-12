@@ -1,4 +1,5 @@
 #include "cMain.h"
+#include "Function.h"
 
 
 
@@ -8,8 +9,7 @@ EVT_SLIDER(5, cMain::OnBright2Update)
 EVT_SLIDER(7, cMain::OnBright3Update)
 EVT_SLIDER(9, cMain::OnBright4Update)
 EVT_SLIDER(11, cMain::OnBright5Update)
-
-
+EVT_BUTTON(103, cMain::OnSaveClick)
 
 wxEND_EVENT_TABLE()
 
@@ -79,6 +79,12 @@ void cMain::OnBright5Update(wxCommandEvent& evt) {
 	m_bright5->SetValue(wxString::Format(wxT("%d"), (int)m_color5->GetValue()));
 }
 
-//void cMain::OnTextEnter(wxEVT_COMMAND_TEXT_UPDATED &evt) {
-//	m_slider->SetValue(wxAtoi(m_txt1->GetValue()));
-//}
+void cMain::OnSaveClick(wxCommandEvent& evt) {
+	Event event;
+	double listsize = m_data->
+	event.SaveToCSV();
+
+	Close(TRUE);
+	
+
+}
