@@ -21,18 +21,12 @@
     <ClInclude Include="cApp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Function.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cApp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Function.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
