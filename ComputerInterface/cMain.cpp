@@ -131,13 +131,17 @@ void cMain::DataIn(wxListBox* listbox) {
 void cMain::SaveToCSV(vector<string> data) {
 	ofstream outdata;
 	string filename;
-	time_t t = time(0);   // get time now
-	struct tm* now = localtime(&t);
-
+	time_t rawtime;
+	struct tm* timeinfo;
 	char buffer[80];
-	strftime(buffer, 80, "%Y-%m-%d.", now);
-	filename = "Solar Data.csv";
-	outdata.open("C:\\Users\\kitsu\\Desktop\\" + filename);
+
+	time(&rawtime);
+	timeinfo = localtime(&rawtime);
+
+	strftime(buffer, sizeof(buffer), "%d-%m-%Y %H.%M.%S", timeinfo);
+	string str(buffer);
+	filename = "Solar Data " + str + ".csv";
+	outdata.open("C:\\Users\\kitsu\\Desktop\\" + filename); //RunkeBenjamin
 	for (int i = 0; i < (int)data.size(); i++) {
 		outdata << data[i] << endl;
 	}
