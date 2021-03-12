@@ -91,7 +91,7 @@ void cMain::OnSaveClick(wxCommandEvent& evt) {
 	}
 	event.SaveToCSV(data);
 
-	Close(TRUE);
+	//Close(TRUE);
 	
 
 }
