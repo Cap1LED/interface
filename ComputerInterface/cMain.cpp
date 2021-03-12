@@ -109,7 +109,7 @@ void cMain::OnRecordClick(wxCommandEvent& evt) {
 	
 }
 
-void Event::DataIn(wxListBox* listbox) {
+void DataIn(wxListBox* listbox) {
 	ifstream indata;
 	//uint8_t buffer;
 	std::vector<uint8_t> DATAVECTOR;
@@ -129,7 +129,7 @@ void Event::DataIn(wxListBox* listbox) {
 
 }
 
-void Event::SaveToCSV(vector<string> data) {
+void SaveToCSV(vector<string> data) {
 	ofstream outdata;
 	string filename;
 	time_t t = time(0);   // get time now
