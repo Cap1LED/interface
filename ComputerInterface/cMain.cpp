@@ -5,8 +5,6 @@
 #include <string>
 #include <ctime>
 #include <iostream>
-#include <thread>
-#include <chrono>
 #include <wiringPiI2C.h>
 #include <iostream>
 using namespace std;
@@ -16,7 +14,7 @@ using namespace std;
 
 
 
-
+int i = 0;
 wxBEGIN_EVENT_TABLE(cMain, wxFrame)
 EVT_SLIDER(1, cMain::OnBright1Update)
 EVT_SLIDER(5, cMain::OnBright2Update)
@@ -25,10 +23,9 @@ EVT_SLIDER(9, cMain::OnBright4Update)
 EVT_SLIDER(11, cMain::OnBright5Update)
 EVT_BUTTON(103, cMain::OnSaveClick)
 EVT_BUTTON(102, cMain::OnRecordClick)
+EVT_TIMER(10, cMain::OnTimer)
 
 wxEND_EVENT_TABLE()
-
-
 
 
 
@@ -68,6 +65,8 @@ cMain::cMain() :wxFrame(nullptr, wxID_ANY, "SolarLED", wxPoint(30, 30), wxSize(5
 	m_export = new wxButton(this, 103, "Save", wxPoint(10, 20), wxSize(60, 30));
 	m_stop = new wxButton(this, 101, "Stop", wxPoint(80, 20), wxSize(60, 30));
 	m_record = new wxButton(this, 102, "Record", wxPoint(150, 20), wxSize(60, 30));
+	m_timer = new wxTimer(this,10);
+	m_timer->Start(1000); // 1 second interval
 	
 }
 
@@ -75,20 +74,12 @@ cMain::~cMain() {
 
 }
 
-
-void connection(){
-while (true){
-    cout << "Testing connection." << endl;
-    int i = 0;
-    while (i < 100000000){
-        i++;
+void cMain::OnTimer(wxTimerEvent& evt){
     
-    }
+    m_temp1->SetValue(wxString::Format(wxT("%d"), i));
+    i++;
     
-    i = 0;
-    
-}       
-}   
+}
 
 
 void cMain::OnBright1Update(wxCommandEvent& evt) {
@@ -128,7 +119,6 @@ void cMain::OnSaveClick(wxCommandEvent& evt) {
 void cMain::OnRecordClick(wxCommandEvent& evt) {
 	
 	DataIn(m_data);
-	connection();
 	
 }
 

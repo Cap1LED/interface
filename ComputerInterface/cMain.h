@@ -39,6 +39,7 @@ public:
 	wxButton* m_stop = nullptr;
 	wxButton* m_record = nullptr;
 	wxButton* m_export = nullptr;
+	wxTimer* m_timer;
 	void OnBright1Update(wxCommandEvent& evt);
 	void OnBright2Update(wxCommandEvent& evt);
 	void OnBright3Update(wxCommandEvent& evt);
@@ -48,6 +49,7 @@ public:
 	void OnRecordClick(wxCommandEvent& evt);
 	void DataIn(wxListBox* listbox);
 	void SaveToCSV(std::vector<std::string> data);
+	void OnTimer(wxTimerEvent& evt);
 	
 	wxDECLARE_EVENT_TABLE();
 };
