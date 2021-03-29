@@ -76,6 +76,21 @@ cMain::~cMain() {
 }
 
 
+void connection(){
+while (true){
+    cout << "Testing connection." << endl;
+    int i = 0;
+    while (i < 100000000){
+        i++;
+    
+    }
+    
+    i = 0;
+    
+}       
+}   
+
+
 void cMain::OnBright1Update(wxCommandEvent& evt) {
 	m_bright1->SetValue(wxString::Format(wxT("%d"), (int)m_color1->GetValue()));
 }
@@ -113,6 +128,7 @@ void cMain::OnSaveClick(wxCommandEvent& evt) {
 void cMain::OnRecordClick(wxCommandEvent& evt) {
 	
 	DataIn(m_data);
+	connection();
 	
 }
 
