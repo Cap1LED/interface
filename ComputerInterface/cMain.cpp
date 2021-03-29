@@ -123,22 +123,24 @@ void cMain::OnRecordClick(wxCommandEvent& evt) {
 }
 
 void cMain::DataIn(wxListBox* listbox) {
-	ifstream indata;
+	//ifstream indata;
 	//uint8_t buffer;
-	std::vector<uint8_t> DATAVECTOR;
-	std::vector<string> LISTBOXIN;
-	indata.open("test_file.txt");
-	if (!indata) {
-		cout << "Could not open file." << endl;
-	}
-	if (indata.is_open()) {
-		string temp;
-		while (getline(indata, temp)) {
-			wxString add(temp);
-			listbox->Append(add);
-		}
-		indata.close();
-	}
+	//std::vector<uint8_t> DATAVECTOR;
+	//std::vector<string> LISTBOXIN;
+	//indata.open("test_file.txt");
+	//if (!indata) {
+	//	cout << "Could not open file." << endl;
+	//}
+	//if (indata.is_open()) {
+		//string temp;
+		//while (getline(indata, temp)) {
+			//wxString add(temp);
+			//listbox->Append(add);
+		//}
+		//indata.close();
+	//}
+	wxString add(m_temp1->GetValue());
+	listbox->Append(add);
 
 }
 
