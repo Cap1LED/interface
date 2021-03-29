@@ -165,7 +165,7 @@ void cMain::SaveToCSV(vector<string> data) {
 	strftime(buffer, sizeof(buffer), "%d-%m-%Y %H.%M.%S", timeinfo);
 	string str(buffer);
 	filename = "Solar Data " + str + ".csv";
-	outdata.open("C:\\Users\\kitsu\\Desktop\\" + filename); //RunkeBenjamin
+	outdata.open("/home/odroid/Desktop/SolarLEDData" + filename); //RunkeBenjamin
 	for (int i = 0; i < (int)data.size(); i++) {
 		outdata << data[i] << endl;
 	}
