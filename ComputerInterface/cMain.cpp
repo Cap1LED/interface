@@ -5,6 +5,9 @@
 #include <string>
 #include <ctime>
 #include <iostream>
+#include <thread>
+#include <chrono>
+#include <wiringPiI2c.h>
 using namespace std;
 
 
