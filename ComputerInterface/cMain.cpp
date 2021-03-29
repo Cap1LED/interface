@@ -8,7 +8,12 @@
 #include <thread>
 #include <chrono>
 #include <wiringPiI2C.h>
+#include <iostream>
 using namespace std;
+
+#define DEVICE_ID 0x10
+
+
 
 
 
@@ -63,7 +68,7 @@ cMain::cMain() :wxFrame(nullptr, wxID_ANY, "SolarLED", wxPoint(30, 30), wxSize(5
 	m_export = new wxButton(this, 103, "Save", wxPoint(10, 20), wxSize(60, 30));
 	m_stop = new wxButton(this, 101, "Stop", wxPoint(80, 20), wxSize(60, 30));
 	m_record = new wxButton(this, 102, "Record", wxPoint(150, 20), wxSize(60, 30));
-
+	
 }
 
 cMain::~cMain() {
@@ -152,3 +157,11 @@ void cMain::SaveToCSV(vector<string> data) {
 
 
 }
+
+
+
+
+
+
+
+
