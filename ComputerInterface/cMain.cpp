@@ -7,7 +7,7 @@
 #include <iostream>
 #include <thread>
 #include <chrono>
-#include <wiringPiI2c.h>
+#include <wiringPiI2C.h>
 using namespace std;
 
 
