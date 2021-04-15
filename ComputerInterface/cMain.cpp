@@ -9,12 +9,12 @@
 #include <iostream>
 using namespace std;
 
-#define DEVICE_ID 0x10
-
-
-
+#define DEVICE_ID 0x08
 
 int i = 0;
+string received3000k;
+const int fd = wiringPiI2CSetup(DEVICE_ID);
+    
 wxBEGIN_EVENT_TABLE(cMain, wxFrame)
 EVT_SLIDER(1, cMain::OnBright1Update)
 EVT_SLIDER(5, cMain::OnBright2Update)
@@ -24,7 +24,7 @@ EVT_SLIDER(11, cMain::OnBright5Update)
 EVT_BUTTON(103, cMain::OnSaveClick)
 EVT_BUTTON(102, cMain::OnRecordClick)
 EVT_TIMER(10, cMain::OnTimer)
-
+EVT_BUTTON(104, cMain::OnUpdateClick)
 wxEND_EVENT_TABLE()
 
 
@@ -65,8 +65,13 @@ cMain::cMain() :wxFrame(nullptr, wxID_ANY, "SolarLED", wxPoint(30, 30), wxSize(5
 	m_export = new wxButton(this, 103, "Save", wxPoint(10, 20), wxSize(60, 30));
 	m_stop = new wxButton(this, 101, "Stop", wxPoint(80, 20), wxSize(60, 30));
 	m_record = new wxButton(this, 102, "Record", wxPoint(150, 20), wxSize(60, 30));
+	m_update = new wxButton(this, 104, "Update", wxPoint(160, 20), wxSize(60,30));
 	m_timer = new wxTimer(this,10);
+	if(fd == -1){
+        cout << "Fail to make connection" << endl;
+    }
 	m_timer->Start(1000); // 1 second interval
+	//wiringPiI2CWriteReg8(fd,0x2D,0b00001000);
 	
 }
 
@@ -76,14 +81,52 @@ cMain::~cMain() {
 
 void cMain::OnTimer(wxTimerEvent& evt){
     
-    m_temp1->SetValue(wxString::Format(wxT("%d"), i));
-    i++;
-    
+    //m_temp1->SetValue(wxString::Format(wxT("%d"), i));
+    //i++;
+    //int* buffer = new int[8];
+    //while(wiringPiI2CRead(fd){
+     //    = wiringPiI2CRead(fd);
+     //   char c = char(ascChar);
+     //   cout << c << endl;
+     //   received3000k= received3000k + c;
+    //}
+    cout << wiringPiI2CRead(fd) << endl;
+    //received3000k = "";
+    //delete[] buffer;
 }
 
 
 void cMain::OnBright1Update(wxCommandEvent& evt) {
-	m_bright1->SetValue(wxString::Format(wxT("%d"), (int)m_color1->GetValue()));
+	//m_bright1->SetValue(wxString::Format(wxT("%d"), (int)m_color1->GetValue()));
+    //if(std::string(m_bright1->GetValue().mb_str()).length() == 3){
+        //string message = "1" + std::string(m_bright1->GetValue().mb_str());
+        //for(int i = 0; i < message.length(); i++){
+         //   int ascChar = message[i];
+         //   wiringPiI2CWrite(fd,ascChar);
+        //}
+        
+        //wiringPiI2CWrite(fd,NULL);
+	//}
+	//else if (std::string(m_bright1->GetValue().mb_str()).length() == 2){
+	    //string message = "10" + std::string(m_bright1->GetValue().mb_str());
+       // for(int i = 0; i < message.length(); i++){
+            //int ascChar = message[i];
+            //cout << ascChar << endl;
+            //wiringPiI2CWrite(fd,ascChar);
+       // }
+       // wiringPiI2CWrite(fd,);
+	
+	
+	//}
+	//else{
+	//    string message = "100" + std::string(m_bright1->GetValue().mb_str());
+   //     for(int i = 0; i < message.length(); i++){
+   //         int ascChar = message[i];
+  //          wiringPiI2CWrite(fd,ascChar);
+   //     }
+        //wiringPiI2CWrite(fd,NULL);
+	//}
+    //wxMilliSleep(10);
 }
 
 void cMain::OnBright2Update(wxCommandEvent& evt) {
@@ -122,6 +165,9 @@ void cMain::OnRecordClick(wxCommandEvent& evt) {
 	
 }
 
+void cMain::OnUpdateClick(wxCommandEvent& evt){
+    wiringPiI2CWrite(fd, 1);
+}
 void cMain::DataIn(wxListBox* listbox) {
 	//ifstream indata;
 	//uint8_t buffer;
