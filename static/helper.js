@@ -23,7 +23,7 @@ function clearData() {
 
 // This function creates a POST to the API
 // that then communicates with the a microcontroller
-// on the selected address via I2C (20 bytes, 4xF16)
+// on the selected address via I2C (20 bytes, 5xF32)
 function dutyCycle() {
     data = {
         "board" : "1",
