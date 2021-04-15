@@ -2,8 +2,9 @@ use i2cdev::core::*;
 use i2cdev::linux::{LinuxI2CMessage, LinuxI2CBus, LinuxI2CError};
 
 use actix_web::{
-    web, HttpResponse, 
+    middleware, web, App, HttpServer, HttpResponse, 
 };
+use actix_files as fs;
 use serde::{Deserialize, Serialize};
 use serde_with::{serde_as, DisplayFromStr};
 
@@ -70,22 +71,22 @@ async fn main() -> std::io::Result<()> {
         Ok(bus) => bus,
         Err(_e) => {
             println!("Error opening I2C bus on /dev/i2c-1 {}", _e);
-            return;
+            return Err(_e);
         }
     };
     println!("Opened I2C Bus on /dev/i2c-1");
     // Board detect
-    let data = [0; 24];
+    let data : [u8; 24] = [0; 24];
     let mut msgs = [
         LinuxI2CMessage::write(&b"d"[..]).with_address(UC_SLAVE_ADDR),
         LinuxI2CMessage::read(&mut data).with_address(UC_SLAVE_ADDR),
     ];
 
     match bus.transfer(&mut msgs) {
-        Ok(rc) => println!("Successfully transferred {} messages!");
+        Ok(rc) => println!("Successfully transferred {} messages!", rc),
         Err(_e) => {
             println!("Error writing and reading: {}", _e);
-            return;
+            return Err(_e);
         }
     };
     //TODO: Validate board, add loop to loop through 0x04-0x10
