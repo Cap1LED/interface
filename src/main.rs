@@ -2,9 +2,8 @@ use i2cdev::core::*;
 use i2cdev::linux::{LinuxI2CMessage, LinuxI2CBus, LinuxI2CError};
 
 use actix_web::{
-    middleware, web, App, HttpResponse, HttpServer,
+    web, HttpResponse, 
 };
-use actix_files as fs;
 use serde::{Deserialize, Serialize};
 use serde_with::{serde_as, DisplayFromStr};
 
@@ -24,6 +23,10 @@ struct UCCommand{
     #[serde_as(as = "Vec<Vec<DisplayFromStr>")]
     duty_cycle: Vec<f32>,
 }
+
+// This is the slave address of the microcontroller.
+// It may be possible to make this an environment variable
+const UC_SLAVE_ADDR: u16 = 0x04;
 
 /// This function detects the microcontrollers via I2C and stores the addresses they responded on in shared state
 async fn board_detect() {
@@ -62,7 +65,31 @@ async fn set_duty_cycle(item: web::Json<UCCommand>) -> HttpResponse {
 async fn main() -> std::io::Result<()> {
     std::env::set_var("RUST_LOG", "actix_web=info");
     env_logger::init();
-    //TODO: Board detect
+    // Initialize I2C Bus
+    let bus = match LinuxI2CBus::new("/dev/i2c-1") {
+        Ok(bus) => bus,
+        Err(_e) => {
+            println!("Error opening I2C bus on /dev/i2c-1 {}", _e);
+            return;
+        }
+    };
+    println!("Opened I2C Bus on /dev/i2c-1");
+    // Board detect
+    let data = [0; 24];
+    let mut msgs = [
+        LinuxI2CMessage::write(&b"d"[..]).with_address(UC_SLAVE_ADDR),
+        LinuxI2CMessage::read(&mut data).with_address(UC_SLAVE_ADDR),
+    ];
+
+    match bus.transfer(&mut msgs) {
+        Ok(rc) => println!("Successfully transferred {} messages!");
+        Err(_e) => {
+            println!("Error writing and reading: {}", _e);
+            return;
+        }
+    };
+    //TODO: Validate board, add loop to loop through 0x04-0x10
+
     HttpServer::new(|| {
         App::new()
             // enable logger
