@@ -1,3 +1,6 @@
+use i2cdev::core::*;
+use i2cdev::linux::{LinuxI2CMessage, LinuxI2CBus, LinuxI2CError};
+
 use actix_web::{
     middleware, web, App, HttpResponse, HttpServer,
 };
