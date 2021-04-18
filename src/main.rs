@@ -86,7 +86,7 @@ async fn main() -> std::io::Result<()> {
         Ok(rc) => println!("Successfully transferred {} messages!", rc),
         Err(_e) => {
             println!("Error writing and reading: {}", _e);
-            return Err(_e);
+            return Ok(());
         }
     };
     //TODO: Validate board, add loop to loop through 0x04-0x10
