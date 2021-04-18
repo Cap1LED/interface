@@ -3,7 +3,7 @@
 
 
 [![BSD 3-Clause](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/Cap1LED/interface/blob/master/LICENSE)
-[![Version](https://img.shields.io/badge/rustc-1.46+-ab6000.svg)](https://blog.rust-lang.org/2020/03/12/Rust-1.46.html)
+[![Version](https://img.shields.io/badge/rustc-1.46+-ab6000.svg)](https://blog.rust-lang.org/2020/08/27/Rust-1.46.0.html)
 
 This is a web interface written in HTML/JS that interacts with an API written in Rust with Actix Web, which interacts with a microcontroller over I2C to gather temperature data as well as set duty cycle of PWM outputs.
 
