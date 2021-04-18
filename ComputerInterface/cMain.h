@@ -51,7 +51,7 @@ public:
 	void DataIn(wxListBox* listbox);
 	void SaveToCSV(std::vector<std::string> data);
 	void OnTimer(wxTimerEvent& evt);
-	void OnUpdateClick(wxTimerEvent& evt);
+	void OnUpdateClick(wxCommandEvent& evt);
 	
 	wxDECLARE_EVENT_TABLE();
 };

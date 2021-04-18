@@ -65,13 +65,18 @@ cMain::cMain() :wxFrame(nullptr, wxID_ANY, "SolarLED", wxPoint(30, 30), wxSize(5
 	m_export = new wxButton(this, 103, "Save", wxPoint(10, 20), wxSize(60, 30));
 	m_stop = new wxButton(this, 101, "Stop", wxPoint(80, 20), wxSize(60, 30));
 	m_record = new wxButton(this, 102, "Record", wxPoint(150, 20), wxSize(60, 30));
-	m_update = new wxButton(this, 104, "Update", wxPoint(160, 20), wxSize(60,30));
+	m_update = new wxButton(this, 104, "Update", wxPoint(220, 20), wxSize(60,30));
 	m_timer = new wxTimer(this,10);
 	if(fd == -1){
         cout << "Fail to make connection" << endl;
     }
 	m_timer->Start(1000); // 1 second interval
 	//wiringPiI2CWriteReg8(fd,0x2D,0b00001000);
+	m_bright1->SetValue(wxString::Format(wxT("%d"), 0));
+	m_bright2->SetValue(wxString::Format(wxT("%d"), 0));
+	m_bright3->SetValue(wxString::Format(wxT("%d"), 0));
+	m_bright4->SetValue(wxString::Format(wxT("%d"), 0));
+	m_bright5->SetValue(wxString::Format(wxT("%d"), 0));
 	
 }
 
@@ -90,14 +95,14 @@ void cMain::OnTimer(wxTimerEvent& evt){
      //   cout << c << endl;
      //   received3000k= received3000k + c;
     //}
-    cout << wiringPiI2CRead(fd) << endl;
+    //cout << wiringPiI2CRead(fd) << endl;
     //received3000k = "";
     //delete[] buffer;
 }
 
 
 void cMain::OnBright1Update(wxCommandEvent& evt) {
-	//m_bright1->SetValue(wxString::Format(wxT("%d"), (int)m_color1->GetValue()));
+	m_bright1->SetValue(wxString::Format(wxT("%d"), (int)m_color1->GetValue()));
     //if(std::string(m_bright1->GetValue().mb_str()).length() == 3){
         //string message = "1" + std::string(m_bright1->GetValue().mb_str());
         //for(int i = 0; i < message.length(); i++){
@@ -166,7 +171,20 @@ void cMain::OnRecordClick(wxCommandEvent& evt) {
 }
 
 void cMain::OnUpdateClick(wxCommandEvent& evt){
-    wiringPiI2CWrite(fd, 1);
+    wiringPiI2CWrite(fd, 101); // Sending contol byte
+    wxMilliSleep(10); // wait 10 milliseconds
+    wiringPiI2CWrite(fd, stoi(std::string(m_bright1->GetValue().mb_str()))); // Sends brightness level of (color)
+    wxMilliSleep(10); // wait 10 milliseconds
+    wiringPiI2CWrite(fd, stoi(std::string(m_bright2->GetValue().mb_str()))); // Sends brightness level of (color)
+    wxMilliSleep(10); // wait 10 milliseconds
+    wiringPiI2CWrite(fd, stoi(std::string(m_bright3->GetValue().mb_str()))); // Sends brightness level of (color)
+    wxMilliSleep(10);
+    wiringPiI2CWrite(fd, stoi(std::string(m_bright4->GetValue().mb_str()))); // Sends brightness level of (color)
+    wxMilliSleep(10); // wait 10 milliseconds
+    wiringPiI2CWrite(fd, stoi(std::string(m_bright5->GetValue().mb_str()))); // Sends brightness level of (color)
+    wxMilliSleep(10); // wait 10 milliseconds
+    
+    
 }
 void cMain::DataIn(wxListBox* listbox) {
 	//ifstream indata;
