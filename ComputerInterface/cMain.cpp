@@ -70,7 +70,7 @@ cMain::cMain() :wxFrame(nullptr, wxID_ANY, "SolarLED", wxPoint(30, 30), wxSize(5
 	if(fd == -1){
         cout << "Fail to make connection" << endl;
     }
-	m_timer->Start(1000); // 1 second interval
+	m_timer->Start(500); // 1 second interval
 	//wiringPiI2CWriteReg8(fd,0x2D,0b00001000);
 	m_bright1->SetValue(wxString::Format(wxT("%d"), 0));
 	m_bright2->SetValue(wxString::Format(wxT("%d"), 0));
@@ -85,6 +85,11 @@ cMain::~cMain() {
 }
 
 void cMain::OnTimer(wxTimerEvent& evt){
+    int input = wiringPiI2CRead(fd);
+
+    if(input != -1){
+        cout << input << endl;
+    }
     
     //m_temp1->SetValue(wxString::Format(wxT("%d"), i));
     //i++;
@@ -103,35 +108,6 @@ void cMain::OnTimer(wxTimerEvent& evt){
 
 void cMain::OnBright1Update(wxCommandEvent& evt) {
 	m_bright1->SetValue(wxString::Format(wxT("%d"), (int)m_color1->GetValue()));
-    //if(std::string(m_bright1->GetValue().mb_str()).length() == 3){
-        //string message = "1" + std::string(m_bright1->GetValue().mb_str());
-        //for(int i = 0; i < message.length(); i++){
-         //   int ascChar = message[i];
-         //   wiringPiI2CWrite(fd,ascChar);
-        //}
-        
-        //wiringPiI2CWrite(fd,NULL);
-	//}
-	//else if (std::string(m_bright1->GetValue().mb_str()).length() == 2){
-	    //string message = "10" + std::string(m_bright1->GetValue().mb_str());
-       // for(int i = 0; i < message.length(); i++){
-            //int ascChar = message[i];
-            //cout << ascChar << endl;
-            //wiringPiI2CWrite(fd,ascChar);
-       // }
-       // wiringPiI2CWrite(fd,);
-	
-	
-	//}
-	//else{
-	//    string message = "100" + std::string(m_bright1->GetValue().mb_str());
-   //     for(int i = 0; i < message.length(); i++){
-   //         int ascChar = message[i];
-  //          wiringPiI2CWrite(fd,ascChar);
-   //     }
-        //wiringPiI2CWrite(fd,NULL);
-	//}
-    //wxMilliSleep(10);
 }
 
 void cMain::OnBright2Update(wxCommandEvent& evt) {
