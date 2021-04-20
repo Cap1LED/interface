@@ -7,6 +7,7 @@
 #include <iostream>
 #include <wiringPiI2C.h>
 #include <iostream>
+#include <cmath>
 using namespace std;
 
 #define DEVICE_ID 0x08
@@ -86,23 +87,18 @@ cMain::~cMain() {
 
 void cMain::OnTimer(wxTimerEvent& evt){
     int input = wiringPiI2CRead(fd);
+    double part1 = (51.0*65536.0/input-51.0)/100.0;
+    int value = -45*log10(part1)+25;
 
     if(input != -1){
-        cout << input << endl;
+       m_temp1->SetValue(wxString::Format(wxT("%d"), value));
+       m_temp2->SetValue(wxString::Format(wxT("%d"), value));
+       m_temp3->SetValue(wxString::Format(wxT("%d"), value));
+       m_temp4->SetValue(wxString::Format(wxT("%d"), value));
+       m_temp5->SetValue(wxString::Format(wxT("%d"), value));
+       
     }
     
-    //m_temp1->SetValue(wxString::Format(wxT("%d"), i));
-    //i++;
-    //int* buffer = new int[8];
-    //while(wiringPiI2CRead(fd){
-     //    = wiringPiI2CRead(fd);
-     //   char c = char(ascChar);
-     //   cout << c << endl;
-     //   received3000k= received3000k + c;
-    //}
-    //cout << wiringPiI2CRead(fd) << endl;
-    //received3000k = "";
-    //delete[] buffer;
 }
 
 
@@ -148,17 +144,17 @@ void cMain::OnRecordClick(wxCommandEvent& evt) {
 
 void cMain::OnUpdateClick(wxCommandEvent& evt){
     wiringPiI2CWrite(fd, 101); // Sending contol byte
-    wxMilliSleep(10); // wait 10 milliseconds
+    //wxMilliSleep(10); // wait 10 milliseconds
     wiringPiI2CWrite(fd, stoi(std::string(m_bright1->GetValue().mb_str()))); // Sends brightness level of (color)
-    wxMilliSleep(10); // wait 10 milliseconds
+    //wxMilliSleep(10); // wait 10 milliseconds
     wiringPiI2CWrite(fd, stoi(std::string(m_bright2->GetValue().mb_str()))); // Sends brightness level of (color)
-    wxMilliSleep(10); // wait 10 milliseconds
+    //wxMilliSleep(10); // wait 10 milliseconds
     wiringPiI2CWrite(fd, stoi(std::string(m_bright3->GetValue().mb_str()))); // Sends brightness level of (color)
-    wxMilliSleep(10);
+    //wxMilliSleep(10);
     wiringPiI2CWrite(fd, stoi(std::string(m_bright4->GetValue().mb_str()))); // Sends brightness level of (color)
-    wxMilliSleep(10); // wait 10 milliseconds
+    //wxMilliSleep(10); // wait 10 milliseconds
     wiringPiI2CWrite(fd, stoi(std::string(m_bright5->GetValue().mb_str()))); // Sends brightness level of (color)
-    wxMilliSleep(10); // wait 10 milliseconds
+    //wxMilliSleep(10); // wait 10 milliseconds
     
     
 }
