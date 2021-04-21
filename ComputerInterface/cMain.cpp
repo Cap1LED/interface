@@ -30,49 +30,56 @@ wxEND_EVENT_TABLE()
 
 
 
-cMain::cMain() :wxFrame(nullptr, wxID_ANY, "SolarLED", wxPoint(30, 30), wxSize(500, 500)) {
+cMain::cMain() :wxFrame(nullptr, wxID_ANY, "SolarLED", wxPoint(30, 30), wxSize(700, 500)) {
 
-	m_color1 = new wxSlider(this, 1, 0, 0, 100, wxPoint(210, 100), wxSize(260, 30), wxSL_HORIZONTAL);
-	m_bright1 = new wxTextCtrl(this, 4, "Brightness", wxPoint(200, 130), wxSize(65, 30));
-	m_temp1 = new wxTextCtrl(this, 13, "Temp", wxPoint(270, 130), wxSize(65, 30));
-	m_current1 = new wxTextCtrl(this, 14, "Current", wxPoint(340, 130), wxSize(65, 30));
-	m_power1 = new wxTextCtrl(this, 15, "Power", wxPoint(410, 130), wxSize(65, 30));
 
-	m_color2 = new wxSlider(this, 5, 0, 0, 100, wxPoint(210, 170), wxSize(260, 30), wxSL_HORIZONTAL);
-	m_bright2 = new wxTextCtrl(this, 4, "Brightness", wxPoint(200, 200), wxSize(65, 30));
-	m_temp2 = new wxTextCtrl(this, 16, "Temp", wxPoint(270, 200), wxSize(65, 30));
-	m_current2 = new wxTextCtrl(this, 17, "Current", wxPoint(340, 200), wxSize(65, 30));
-	m_power2 = new wxTextCtrl(this, 18, "Power", wxPoint(410, 200), wxSize(65, 30));
+	m_color1 = new wxSlider(this, 1, 0, 0, 100, wxPoint(410, 100), wxSize(260, 30), wxSL_HORIZONTAL);
+	m_bright1 = new wxTextCtrl(this, 4, "Brightness", wxPoint(400, 130), wxSize(65, 30));
+	m_temp1 = new wxTextCtrl(this, 13, "Temp", wxPoint(470, 130), wxSize(65, 30));
+	m_current1 = new wxTextCtrl(this, 14, "Current", wxPoint(540, 130), wxSize(65, 30));
+	m_power1 = new wxTextCtrl(this, 15, "Power", wxPoint(610, 130), wxSize(65, 30));
+    m_label1 = new wxStaticText(this, 31, "3000K", wxPoint(340, 105));
+    
+	m_color2 = new wxSlider(this, 5, 0, 0, 100, wxPoint(410, 170), wxSize(260, 30), wxSL_HORIZONTAL);
+	m_bright2 = new wxTextCtrl(this, 4, "Brightness", wxPoint(400, 200), wxSize(65, 30));
+	m_temp2 = new wxTextCtrl(this, 16, "Temp", wxPoint(470, 200), wxSize(65, 30));
+	m_current2 = new wxTextCtrl(this, 17, "Current", wxPoint(540, 200), wxSize(65, 30));
+	m_power2 = new wxTextCtrl(this, 18, "Power", wxPoint(610, 200), wxSize(65, 30));
+    m_label2 = new wxStaticText(this, 32, "4000K", wxPoint(340, 175));
+    
+	m_color3 = new wxSlider(this, 7, 0, 0, 100, wxPoint(410, 240), wxSize(260, 30), wxSL_HORIZONTAL);
+	m_bright3 = new wxTextCtrl(this, 8, "Brightness", wxPoint(400, 270), wxSize(65, 30));
+	m_temp3 = new wxTextCtrl(this, 19, "Temp", wxPoint(470, 270), wxSize(65, 30));
+	m_current3 = new wxTextCtrl(this, 20, "Current", wxPoint(540, 270), wxSize(65, 30));
+	m_power3 = new wxTextCtrl(this, 21, "Power", wxPoint(610, 270), wxSize(65, 30));
+    m_label3 = new wxStaticText(this, 33, "Cyan", wxPoint(340, 245));
 
-	m_color3 = new wxSlider(this, 7, 0, 0, 100, wxPoint(210, 240), wxSize(260, 30), wxSL_HORIZONTAL);
-	m_bright3 = new wxTextCtrl(this, 8, "Brightness", wxPoint(200, 270), wxSize(65, 30));
-	m_temp3 = new wxTextCtrl(this, 19, "Temp", wxPoint(270, 270), wxSize(65, 30));
-	m_current3 = new wxTextCtrl(this, 20, "Current", wxPoint(340, 270), wxSize(65, 30));
-	m_power3 = new wxTextCtrl(this, 21, "Power", wxPoint(410, 270), wxSize(65, 30));
+	m_color4 = new wxSlider(this, 9, 0, 0, 100, wxPoint(410, 310), wxSize(260, 30), wxSL_HORIZONTAL);
+	m_bright4 = new wxTextCtrl(this, 10, "Brightness", wxPoint(400, 340), wxSize(65, 30));
+	m_temp4 = new wxTextCtrl(this, 22, "Temp", wxPoint(470, 340), wxSize(65, 30));
+	m_current4 = new wxTextCtrl(this, 23, "Current", wxPoint(540, 340), wxSize(65, 30));
+	m_power4 = new wxTextCtrl(this, 24, "Power", wxPoint(610, 340), wxSize(65, 30));
+    m_label4 = new wxStaticText(this, 34, "Far Red", wxPoint(340, 315));
 
-	m_color4 = new wxSlider(this, 9, 0, 0, 100, wxPoint(210, 310), wxSize(260, 30), wxSL_HORIZONTAL);
-	m_bright4 = new wxTextCtrl(this, 10, "Brightness", wxPoint(200, 340), wxSize(65, 30));
-	m_temp4 = new wxTextCtrl(this, 22, "Temp", wxPoint(270, 340), wxSize(65, 30));
-	m_current4 = new wxTextCtrl(this, 23, "Current", wxPoint(340, 340), wxSize(65, 30));
-	m_power4 = new wxTextCtrl(this, 24, "Power", wxPoint(410, 340), wxSize(65, 30));
-
-	m_color5 = new wxSlider(this, 11, 0, 0, 100, wxPoint(210, 380), wxSize(260, 30), wxSL_HORIZONTAL);
-	m_bright5 = new wxTextCtrl(this, 12, "Brightness", wxPoint(200, 410), wxSize(65, 30));
-	m_temp5 = new wxTextCtrl(this, 25, "Temp", wxPoint(270, 410), wxSize(65, 30));
-	m_current5 = new wxTextCtrl(this, 26, "Current", wxPoint(340, 410), wxSize(65, 30));
-	m_power5 = new wxTextCtrl(this, 27, "Power", wxPoint(410, 410), wxSize(65, 30));
-
-	m_data = new wxListBox(this, 100, wxPoint(10, 110), wxSize(150, 300));
+	m_color5 = new wxSlider(this, 11, 0, 0, 100, wxPoint(410, 380), wxSize(260, 30), wxSL_HORIZONTAL);
+	m_bright5 = new wxTextCtrl(this, 12, "Brightness", wxPoint(400, 410), wxSize(65, 30));
+	m_temp5 = new wxTextCtrl(this, 25, "Temp", wxPoint(470, 410), wxSize(65, 30));
+	m_current5 = new wxTextCtrl(this, 26, "Current", wxPoint(540, 410), wxSize(65, 30));
+	m_power5 = new wxTextCtrl(this, 27, "Power", wxPoint(610, 410), wxSize(65, 30));
+    m_label5 = new wxStaticText(this, 35, "Deep Red", wxPoint(330, 385));
+    
+	m_data = new wxListBox(this, 100, wxPoint(10, 110), wxSize(250, 300));
 	m_export = new wxButton(this, 103, "Save", wxPoint(10, 20), wxSize(60, 30));
 	m_stop = new wxButton(this, 101, "Stop", wxPoint(80, 20), wxSize(60, 30));
 	m_record = new wxButton(this, 102, "Record", wxPoint(150, 20), wxSize(60, 30));
 	m_update = new wxButton(this, 104, "Update", wxPoint(220, 20), wxSize(60,30));
 	m_timer = new wxTimer(this,10);
+	
+	
 	if(fd == -1){
         cout << "Fail to make connection" << endl;
     }
 	m_timer->Start(500); // 1 second interval
-	//wiringPiI2CWriteReg8(fd,0x2D,0b00001000);
 	m_bright1->SetValue(wxString::Format(wxT("%d"), 0));
 	m_bright2->SetValue(wxString::Format(wxT("%d"), 0));
 	m_bright3->SetValue(wxString::Format(wxT("%d"), 0));
@@ -144,17 +151,11 @@ void cMain::OnRecordClick(wxCommandEvent& evt) {
 
 void cMain::OnUpdateClick(wxCommandEvent& evt){
     wiringPiI2CWrite(fd, 101); // Sending contol byte
-    //wxMilliSleep(10); // wait 10 milliseconds
     wiringPiI2CWrite(fd, stoi(std::string(m_bright1->GetValue().mb_str()))); // Sends brightness level of (color)
-    //wxMilliSleep(10); // wait 10 milliseconds
     wiringPiI2CWrite(fd, stoi(std::string(m_bright2->GetValue().mb_str()))); // Sends brightness level of (color)
-    //wxMilliSleep(10); // wait 10 milliseconds
     wiringPiI2CWrite(fd, stoi(std::string(m_bright3->GetValue().mb_str()))); // Sends brightness level of (color)
-    //wxMilliSleep(10);
     wiringPiI2CWrite(fd, stoi(std::string(m_bright4->GetValue().mb_str()))); // Sends brightness level of (color)
-    //wxMilliSleep(10); // wait 10 milliseconds
     wiringPiI2CWrite(fd, stoi(std::string(m_bright5->GetValue().mb_str()))); // Sends brightness level of (color)
-    //wxMilliSleep(10); // wait 10 milliseconds
     
     
 }

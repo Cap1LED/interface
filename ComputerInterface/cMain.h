@@ -35,6 +35,11 @@ public:
 	wxTextCtrl* m_power3 = nullptr;
 	wxTextCtrl* m_power4 = nullptr;
 	wxTextCtrl* m_power5 = nullptr;
+	wxStaticText* m_label1 = nullptr;
+	wxStaticText* m_label2 = nullptr;
+	wxStaticText* m_label3 = nullptr;
+	wxStaticText* m_label4 = nullptr;
+	wxStaticText* m_label5 = nullptr;
 	wxListBox* m_data = nullptr;
 	wxButton* m_stop = nullptr;
 	wxButton* m_record = nullptr;
