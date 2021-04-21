@@ -1,5 +1,6 @@
 #pragma once
 #include "wx/wx.h"
+#include "wx/listctrl.h"
 #include <vector>
 #include <string>
 class cMain : public wxFrame
@@ -40,7 +41,7 @@ public:
 	wxStaticText* m_label3 = nullptr;
 	wxStaticText* m_label4 = nullptr;
 	wxStaticText* m_label5 = nullptr;
-	wxListBox* m_data = nullptr;
+	wxListCtrl* m_data = nullptr;
 	wxButton* m_stop = nullptr;
 	wxButton* m_record = nullptr;
 	wxButton* m_export = nullptr;
@@ -52,8 +53,9 @@ public:
 	void OnBright4Update(wxCommandEvent& evt);
 	void OnBright5Update(wxCommandEvent& evt);
 	void OnSaveClick(wxCommandEvent& evt);
+	void OnStopClick(wxCommandEvent& evt);
 	void OnRecordClick(wxCommandEvent& evt);
-	void DataIn(wxListBox* listbox);
+	void DataIn(wxListCtrl* listbox);
 	void SaveToCSV(std::vector<std::string> data);
 	void OnTimer(wxTimerEvent& evt);
 	void OnUpdateClick(wxCommandEvent& evt);

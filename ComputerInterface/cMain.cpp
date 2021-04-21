@@ -15,7 +15,8 @@ using namespace std;
 int i = 0;
 string received3000k;
 const int fd = wiringPiI2CSetup(DEVICE_ID);
-    
+bool record = false;
+long int listIndex = 0;
 wxBEGIN_EVENT_TABLE(cMain, wxFrame)
 EVT_SLIDER(1, cMain::OnBright1Update)
 EVT_SLIDER(5, cMain::OnBright2Update)
@@ -26,6 +27,7 @@ EVT_BUTTON(103, cMain::OnSaveClick)
 EVT_BUTTON(102, cMain::OnRecordClick)
 EVT_TIMER(10, cMain::OnTimer)
 EVT_BUTTON(104, cMain::OnUpdateClick)
+EVT_BUTTON(101, cMain::OnStopClick)
 wxEND_EVENT_TABLE()
 
 
@@ -68,7 +70,7 @@ cMain::cMain() :wxFrame(nullptr, wxID_ANY, "SolarLED", wxPoint(30, 30), wxSize(7
 	m_power5 = new wxTextCtrl(this, 27, "Power", wxPoint(610, 410), wxSize(65, 30));
     m_label5 = new wxStaticText(this, 35, "Deep Red", wxPoint(330, 385));
     
-	m_data = new wxListBox(this, 100, wxPoint(10, 110), wxSize(250, 300));
+	m_data = new wxListCtrl(this, 100, wxPoint(10, 110), wxSize(250, 300),wxLC_REPORT);
 	m_export = new wxButton(this, 103, "Save", wxPoint(10, 20), wxSize(60, 30));
 	m_stop = new wxButton(this, 101, "Stop", wxPoint(80, 20), wxSize(60, 30));
 	m_record = new wxButton(this, 102, "Record", wxPoint(150, 20), wxSize(60, 30));
@@ -79,12 +81,17 @@ cMain::cMain() :wxFrame(nullptr, wxID_ANY, "SolarLED", wxPoint(30, 30), wxSize(7
 	if(fd == -1){
         cout << "Fail to make connection" << endl;
     }
-	m_timer->Start(500); // 1 second interval
+	m_timer->Start(1000); // 1 second interval
 	m_bright1->SetValue(wxString::Format(wxT("%d"), 0));
 	m_bright2->SetValue(wxString::Format(wxT("%d"), 0));
 	m_bright3->SetValue(wxString::Format(wxT("%d"), 0));
 	m_bright4->SetValue(wxString::Format(wxT("%d"), 0));
 	m_bright5->SetValue(wxString::Format(wxT("%d"), 0));
+	m_data -> InsertColumn(0, "Color", wxLIST_FORMAT_LEFT, wxLIST_AUTOSIZE);
+	m_data -> InsertColumn(1, "%", wxLIST_FORMAT_LEFT, wxLIST_AUTOSIZE);
+	m_data -> InsertColumn(2, "Temp", wxLIST_FORMAT_LEFT, wxLIST_AUTOSIZE);
+	m_data -> InsertColumn(3, "Current", wxLIST_FORMAT_LEFT, wxLIST_AUTOSIZE);
+	m_data -> InsertColumn(4, "Power", wxLIST_FORMAT_LEFT, wxLIST_AUTOSIZE);
 	
 }
 
@@ -93,8 +100,17 @@ cMain::~cMain() {
 }
 
 void cMain::OnTimer(wxTimerEvent& evt){
+    //wiringPiI2CWrite(fd, 102); 
+    wiringPiI2CWrite(fd, 101); // Sending contol byte
+    wiringPiI2CWrite(fd, stoi(std::string(m_bright1->GetValue().mb_str()))); // Sends brightness level of (color)
+    wiringPiI2CWrite(fd, stoi(std::string(m_bright2->GetValue().mb_str()))); // Sends brightness level of (color)
+    wiringPiI2CWrite(fd, stoi(std::string(m_bright3->GetValue().mb_str()))); // Sends brightness level of (color)
+    wiringPiI2CWrite(fd, stoi(std::string(m_bright4->GetValue().mb_str()))); // Sends brightness level of (color)
+    wiringPiI2CWrite(fd, stoi(std::string(m_bright5->GetValue().mb_str()))); // Sends brightness level of (color)
+    
     int input = wiringPiI2CRead(fd);
-    double part1 = (51.0*65536.0/input-51.0)/100.0;
+    cout << input << endl;
+    double part1 = input/100.0;
     int value = -45*log10(part1)+25;
 
     if(input != -1){
@@ -103,7 +119,12 @@ void cMain::OnTimer(wxTimerEvent& evt){
        m_temp3->SetValue(wxString::Format(wxT("%d"), value));
        m_temp4->SetValue(wxString::Format(wxT("%d"), value));
        m_temp5->SetValue(wxString::Format(wxT("%d"), value));
-       
+    }
+    
+    
+    
+    if(record == true){
+       DataIn(m_data);
     }
     
 }
@@ -130,23 +151,24 @@ void cMain::OnBright5Update(wxCommandEvent& evt) {
 }
 
 void cMain::OnSaveClick(wxCommandEvent& evt) {
-
 	std::vector<std::string> data;
-	double listsize = (double)m_data->GetCount();
-	for (int i = 0; i < listsize; i++) {
-		data.push_back((std::string)m_data->GetString(i));
+	string tempLine;
+	for (long int i = listIndex-1; i >= 0; i--) {
+	    tempLine = m_data->GetItemText(i, 0) + "," + m_data->GetItemText(i, 1) + "," 
+	    + m_data->GetItemText(i, 2) + "," + m_data->GetItemText(i, 3) + "," + m_data->GetItemText(i, 4);
+		data.push_back(tempLine);
 	}
 	SaveToCSV(data);
-
-	//Close(TRUE);
-	
-
 }
 
 void cMain::OnRecordClick(wxCommandEvent& evt) {
-	
-	DataIn(m_data);
-	
+	record = true;
+	m_export -> Enable(false);
+}
+
+void cMain::OnStopClick(wxCommandEvent& evt){
+    record = false;
+    m_export -> Enable(true);
 }
 
 void cMain::OnUpdateClick(wxCommandEvent& evt){
@@ -157,28 +179,39 @@ void cMain::OnUpdateClick(wxCommandEvent& evt){
     wiringPiI2CWrite(fd, stoi(std::string(m_bright4->GetValue().mb_str()))); // Sends brightness level of (color)
     wiringPiI2CWrite(fd, stoi(std::string(m_bright5->GetValue().mb_str()))); // Sends brightness level of (color)
     
-    
 }
-void cMain::DataIn(wxListBox* listbox) {
-	//ifstream indata;
-	//uint8_t buffer;
-	//std::vector<uint8_t> DATAVECTOR;
-	//std::vector<string> LISTBOXIN;
-	//indata.open("test_file.txt");
-	//if (!indata) {
-	//	cout << "Could not open file." << endl;
-	//}
-	//if (indata.is_open()) {
-		//string temp;
-		//while (getline(indata, temp)) {
-			//wxString add(temp);
-			//listbox->Append(add);
-		//}
-		//indata.close();
-	//}
-	wxString add(m_temp1->GetValue());
-	listbox->Append(add);
-
+void cMain::DataIn(wxListCtrl* listbox) {
+	long itemIndex; 
+	itemIndex = listbox->InsertItem(listIndex,"3000k");
+	listbox -> SetItem(itemIndex, 1, std::string(m_bright1->GetValue().mb_str()));
+	listbox -> SetItem(itemIndex, 2, std::string(m_temp1->GetValue().mb_str()));
+	listbox -> SetItem(itemIndex, 3, std::string(m_current1->GetValue().mb_str()));
+	listbox -> SetItem(itemIndex, 4, std::string(m_power1->GetValue().mb_str()));
+	listIndex++;
+	itemIndex = listbox->InsertItem(listIndex,"4000k");
+	listbox -> SetItem(itemIndex, 1, std::string(m_bright2->GetValue().mb_str()));
+	listbox -> SetItem(itemIndex, 2, std::string(m_temp2->GetValue().mb_str()));
+	listbox -> SetItem(itemIndex, 3, std::string(m_current2->GetValue().mb_str()));
+	listbox -> SetItem(itemIndex, 4, std::string(m_power2->GetValue().mb_str()));
+	listIndex++;
+	itemIndex = listbox->InsertItem(listIndex,"Cyan");
+	listbox -> SetItem(itemIndex, 1, std::string(m_bright3->GetValue().mb_str()));
+	listbox -> SetItem(itemIndex, 2, std::string(m_temp3->GetValue().mb_str()));
+	listbox -> SetItem(itemIndex, 3, std::string(m_current3->GetValue().mb_str()));
+	listbox -> SetItem(itemIndex, 4, std::string(m_power3->GetValue().mb_str()));
+	listIndex++;
+	itemIndex = listbox->InsertItem(listIndex, "Far Red");
+	listbox -> SetItem(itemIndex, 1, std::string(m_bright4->GetValue().mb_str()));
+	listbox -> SetItem(itemIndex, 2, std::string(m_temp4->GetValue().mb_str()));
+	listbox -> SetItem(itemIndex, 3, std::string(m_current4->GetValue().mb_str()));
+	listbox -> SetItem(itemIndex, 4, std::string(m_power4->GetValue().mb_str()));
+	listIndex++;
+	itemIndex = listbox->InsertItem(listIndex,"Deep Red");
+	listbox -> SetItem(itemIndex, 1, std::string(m_bright5->GetValue().mb_str()));
+	listbox -> SetItem(itemIndex, 2, std::string(m_temp5->GetValue().mb_str()));
+	listbox -> SetItem(itemIndex, 3, std::string(m_current5->GetValue().mb_str()));
+	listbox -> SetItem(itemIndex, 4, std::string(m_power5->GetValue().mb_str()));
+	listIndex++;
 }
 
 void cMain::SaveToCSV(vector<string> data) {
