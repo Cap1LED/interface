@@ -13,7 +13,6 @@ using namespace std;
 #define DEVICE_ID 0x08
 
 int i = 0;
-string received3000k;
 const int fd = wiringPiI2CSetup(DEVICE_ID);
 bool record = false;
 long int listIndex = 0;
@@ -28,6 +27,7 @@ EVT_BUTTON(102, cMain::OnRecordClick)
 EVT_TIMER(10, cMain::OnTimer)
 EVT_BUTTON(104, cMain::OnUpdateClick)
 EVT_BUTTON(101, cMain::OnStopClick)
+EVT_BUTTON(105, cMain::OnClearClick)
 wxEND_EVENT_TABLE()
 
 
@@ -75,13 +75,15 @@ cMain::cMain() :wxFrame(nullptr, wxID_ANY, "SolarLED", wxPoint(30, 30), wxSize(7
 	m_stop = new wxButton(this, 101, "Stop", wxPoint(80, 20), wxSize(60, 30));
 	m_record = new wxButton(this, 102, "Record", wxPoint(150, 20), wxSize(60, 30));
 	m_update = new wxButton(this, 104, "Update", wxPoint(220, 20), wxSize(60,30));
+	m_clear = new wxButton(this, 105, "Clear", wxPoint(290, 20), wxSize(60,30));
 	m_timer = new wxTimer(this,10);
 	
 	
 	if(fd == -1){
         cout << "Fail to make connection" << endl;
     }
-	m_timer->Start(1000); // 1 second interval
+    
+	m_timer->Start(100); // 1 second interval
 	m_bright1->SetValue(wxString::Format(wxT("%d"), 0));
 	m_bright2->SetValue(wxString::Format(wxT("%d"), 0));
 	m_bright3->SetValue(wxString::Format(wxT("%d"), 0));
@@ -100,32 +102,30 @@ cMain::~cMain() {
 }
 
 void cMain::OnTimer(wxTimerEvent& evt){
-    //wiringPiI2CWrite(fd, 102); 
+    
+    
+    int input = wiringPiI2CRead(fd);
+    cout << input << endl;
+    if(input != 255 && input != -1){
+    double part1 = input/100.0;
+    double value = -45*log10(part1)+25;
+    m_temp1->SetValue(wxString::Format(wxT("%.2f"), value));
+    m_temp2->SetValue(wxString::Format(wxT("%.2f"), value));
+    m_temp3->SetValue(wxString::Format(wxT("%.2f"), value));
+    m_temp4->SetValue(wxString::Format(wxT("%.2f"), value));
+    m_temp5->SetValue(wxString::Format(wxT("%.2f"), value));
+    }
+    
     wiringPiI2CWrite(fd, 101); // Sending contol byte
     wiringPiI2CWrite(fd, stoi(std::string(m_bright1->GetValue().mb_str()))); // Sends brightness level of (color)
     wiringPiI2CWrite(fd, stoi(std::string(m_bright2->GetValue().mb_str()))); // Sends brightness level of (color)
     wiringPiI2CWrite(fd, stoi(std::string(m_bright3->GetValue().mb_str()))); // Sends brightness level of (color)
     wiringPiI2CWrite(fd, stoi(std::string(m_bright4->GetValue().mb_str()))); // Sends brightness level of (color)
     wiringPiI2CWrite(fd, stoi(std::string(m_bright5->GetValue().mb_str()))); // Sends brightness level of (color)
-    
-    int input = wiringPiI2CRead(fd);
-    cout << input << endl;
-    double part1 = input/100.0;
-    int value = -45*log10(part1)+25;
-
-    if(input != -1){
-       m_temp1->SetValue(wxString::Format(wxT("%d"), value));
-       m_temp2->SetValue(wxString::Format(wxT("%d"), value));
-       m_temp3->SetValue(wxString::Format(wxT("%d"), value));
-       m_temp4->SetValue(wxString::Format(wxT("%d"), value));
-       m_temp5->SetValue(wxString::Format(wxT("%d"), value));
-    }
-    
-    
-    
     if(record == true){
        DataIn(m_data);
     }
+    
     
 }
 
@@ -180,6 +180,10 @@ void cMain::OnUpdateClick(wxCommandEvent& evt){
     wiringPiI2CWrite(fd, stoi(std::string(m_bright5->GetValue().mb_str()))); // Sends brightness level of (color)
     
 }
+void cMain::OnClearClick(wxCommandEvent& evt){
+    
+}
+
 void cMain::DataIn(wxListCtrl* listbox) {
 	long itemIndex; 
 	itemIndex = listbox->InsertItem(listIndex,"3000k");
