@@ -105,7 +105,6 @@ void cMain::OnTimer(wxTimerEvent& evt){
     
     
     int input = wiringPiI2CRead(fd);
-    cout << input << endl;
     if(input != 255 && input != -1){
     double part1 = input/100.0;
     double value = -45*log10(part1)+25;
