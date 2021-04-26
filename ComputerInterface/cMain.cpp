@@ -148,12 +148,12 @@ void cMain::OnBright3Update(wxCommandEvent& evt) {
 
 void cMain::OnBright4Update(wxCommandEvent& evt) {
 	m_bright4->SetValue(wxString::Format(wxT("%d"), (int)m_color4->GetValue()));
-	m_current3->SetValue(wxString::Format(wxT("%d"), (int)((int)m_color3->GetValue()/100.00*CRI)));
+	m_current4->SetValue(wxString::Format(wxT("%d"), (int)((int)m_color4->GetValue()/100.00*CRI)));
 }
 
 void cMain::OnBright5Update(wxCommandEvent& evt) {
 	m_bright5->SetValue(wxString::Format(wxT("%d"), (int)m_color5->GetValue()));
-	m_current3->SetValue(wxString::Format(wxT("%d"), (int)((int)m_color3->GetValue()/100.00*CRI)));
+	m_current5->SetValue(wxString::Format(wxT("%d"), (int)((int)m_color5->GetValue()/100.00*CRI)));
 }
 
 void cMain::OnSaveClick(wxCommandEvent& evt) {
