@@ -45,7 +45,6 @@ public:
 	wxButton* m_stop = nullptr;
 	wxButton* m_record = nullptr;
 	wxButton* m_export = nullptr;
-	wxButton* m_update = nullptr;
 	wxButton* m_clear = nullptr;
 	wxTimer* m_timer;
 	void OnBright1Update(wxCommandEvent& evt);
