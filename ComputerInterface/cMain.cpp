@@ -155,6 +155,8 @@ void cMain::OnTimer(wxTimerEvent& evt){
 
 /*
 	These events are used to change the brightness of the LEDs, as well as update the current and power of the LEDs based on the current duty cycle.
+	The power update has not been completed. The algorithm to update the power should be as follows, but has not been tested.
+	(# of LEDs per string)*(voltage across each LED in string(54v nominal))*(current)*(duty cycle)/(total number of same type of LED per module)
 */
 void cMain::OnBright1Update(wxCommandEvent& evt) {
 	m_bright1->SetValue(wxString::Format(wxT("%d"), (int)m_color1->GetValue()));
