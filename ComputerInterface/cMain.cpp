@@ -10,16 +10,23 @@
 #include <cmath>
 using namespace std;
 
-#define DEVICE_ID 0x08
+#define DEVICE_ID 0x08 // defines DEVICE_ID as the slave device address. 
 
 int i = 0;
-const int fd = wiringPiI2CSetup(DEVICE_ID);
+const int fd = wiringPiI2CSetup(DEVICE_ID);  // enables connection to the DEVICE_ID
 bool record = false;
 long int listIndex = 0;
 const double creeI = 480.00; //The nominal current for the 3/4000k LEDs
 const double CRI = 350.00; //The nominal current for the Cyan/Red LEDs
 const double normV = 54.00; //Nominal voltage 
-wxBEGIN_EVENT_TABLE(cMain, wxFrame)
+
+
+/*
+* This is the Event table the enables Events for the sliders, buttons, and timer for each
+* ID
+*/
+
+wxBEGIN_EVENT_TABLE(cMain, wxFrame) 
 EVT_SLIDER(1, cMain::OnBright1Update)
 EVT_SLIDER(5, cMain::OnBright2Update)
 EVT_SLIDER(7, cMain::OnBright3Update)
