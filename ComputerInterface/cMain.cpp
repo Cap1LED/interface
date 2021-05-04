@@ -1,3 +1,9 @@
+/*
+	This is the GUI created to work in tandem with the microcontroller. All libraries must be correctly installed on the device before debugging.
+	Once libraries are successfully installed, this code can be compilled from a terminal.
+	The correct command line is as follows: g++ cMain.cpp cApp.cpp `wx-config --cxxflags --libs` -lwiringPi -lcrypt -o SolarLED
+	To run the program from terminal: ./SolarLED
+*/
 #include "cMain.h"
 #include <vector>
 #include <string>
