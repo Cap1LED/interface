@@ -38,7 +38,7 @@ wxEND_EVENT_TABLE()
 	Our GUI uses 5 modules for the LED types as well as a save, record, stop, and clear button. 
 	This GUI also uses a timer to update the temperature, current and power displays for each LED.
 	Finally, it uses a List Control Box which is used to display the data.
-	*/
+*/
 cMain::cMain() :wxFrame(nullptr, wxID_ANY, "SolarLED", wxPoint(30, 30), wxSize(700, 500)) {
 
 	
@@ -107,13 +107,18 @@ cMain::~cMain() {
 
 }
 
+/*
+	The timer event run by the event handler. This function runs the I2C communication with the microcontroller.
+	We are first reading the temperature data and then writing the duty cycle.
+	We are also checking to see if the Record button was pressed.
+*/
 void cMain::OnTimer(wxTimerEvent& evt){
     
     
     int input = wiringPiI2CRead(fd);
-    if(input != 255 && input != -1){
+    if(input != 255 && input != -1){ 
     double part1 = input/100.0;
-    double value = -45*log10(part1)+25;
+    double value = -45*log10(part1)+25; //Function used to calculate the temperature in degrees Celsius based on the temperature sensor.
     m_temp1->SetValue(wxString::Format(wxT("%.2f"), value));
     m_temp2->SetValue(wxString::Format(wxT("%.2f"), value));
     m_temp3->SetValue(wxString::Format(wxT("%.2f"), value));
@@ -121,12 +126,12 @@ void cMain::OnTimer(wxTimerEvent& evt){
     m_temp5->SetValue(wxString::Format(wxT("%.2f"), value));
     }
     
-    wiringPiI2CWrite(fd, 101); // Sending contol byte
-    wiringPiI2CWrite(fd, stoi(std::string(m_bright1->GetValue().mb_str()))); // Sends brightness level of (color)
-    wiringPiI2CWrite(fd, stoi(std::string(m_bright2->GetValue().mb_str()))); // Sends brightness level of (color)
-    wiringPiI2CWrite(fd, stoi(std::string(m_bright3->GetValue().mb_str()))); // Sends brightness level of (color)
-    wiringPiI2CWrite(fd, stoi(std::string(m_bright4->GetValue().mb_str()))); // Sends brightness level of (color)
-    wiringPiI2CWrite(fd, stoi(std::string(m_bright5->GetValue().mb_str()))); // Sends brightness level of (color)
+    wiringPiI2CWrite(fd, 101); // Designated control byte to indicate start of data stream.
+    wiringPiI2CWrite(fd, stoi(std::string(m_bright1->GetValue().mb_str()))); 
+    wiringPiI2CWrite(fd, stoi(std::string(m_bright2->GetValue().mb_str()))); 
+    wiringPiI2CWrite(fd, stoi(std::string(m_bright3->GetValue().mb_str()))); 
+    wiringPiI2CWrite(fd, stoi(std::string(m_bright4->GetValue().mb_str()))); 
+    wiringPiI2CWrite(fd, stoi(std::string(m_bright5->GetValue().mb_str()))); 
     if(record == true){
        DataIn(m_data);
     }
@@ -135,7 +140,9 @@ void cMain::OnTimer(wxTimerEvent& evt){
     
 }
 
-
+/*
+	These events are used to change the brightness of the LEDs, as well as update the current and power of the LEDs based on the current duty cycle.
+*/
 void cMain::OnBright1Update(wxCommandEvent& evt) {
 	m_bright1->SetValue(wxString::Format(wxT("%d"), (int)m_color1->GetValue()));
 	m_current1->SetValue(wxString::Format(wxT("%d"), (int)((int)m_color1->GetValue()/100.00*creeI)));
@@ -160,7 +167,9 @@ void cMain::OnBright5Update(wxCommandEvent& evt) {
 	m_bright5->SetValue(wxString::Format(wxT("%d"), (int)m_color5->GetValue()));
 	m_current5->SetValue(wxString::Format(wxT("%d"), (int)((int)m_color5->GetValue()/100.00*CRI)));
 }
-
+/*
+	This function is used to store the values in the ListCtrl and then send them to the SaveToCSV function.
+*/
 void cMain::OnSaveClick(wxCommandEvent& evt) {
 	std::vector<std::string> data;
 	string tempLine;
@@ -171,7 +180,9 @@ void cMain::OnSaveClick(wxCommandEvent& evt) {
 	}
 	SaveToCSV(data);
 }
-
+/*
+	Enables recording of the data from I2C and the sliders.
+*/
 void cMain::OnRecordClick(wxCommandEvent& evt) {
 	record = true;
 	m_export -> Enable(false);
@@ -186,7 +197,9 @@ void cMain::OnClearClick(wxCommandEvent& evt){
     m_data->DeleteAllItems();
     listIndex=0;
 }
-
+/*
+	This function adds the appropriate data to the ListCtrl. Uses an index to keep track of the current position within the ListCtrl.
+*/
 void cMain::DataIn(wxListCtrl* listbox) {
 	long itemIndex; 
 	itemIndex = listbox->InsertItem(listIndex,"3000k");
@@ -220,7 +233,10 @@ void cMain::DataIn(wxListCtrl* listbox) {
 	listbox -> SetItem(itemIndex, 4, std::string(m_power5->GetValue().mb_str()));
 	listIndex++;
 }
-
+/*
+	Creates a new .csv file that will store the data. It will save the file onto the Odroid desktop
+	as well as show the time that the file was created.
+*/
 void cMain::SaveToCSV(vector<string> data) {
 	ofstream outdata;
 	string filename;
@@ -234,7 +250,7 @@ void cMain::SaveToCSV(vector<string> data) {
 	strftime(buffer, sizeof(buffer), "%d-%m-%Y %H.%M.%S", timeinfo);
 	string str(buffer);
 	filename = "Solar Data " + str + ".csv";
-	outdata.open("/home/odroid/Desktop/SolarLEDData" + filename); //RunkeBenjamin
+	outdata.open("/home/odroid/Desktop/SolarLEDData" + filename);
 	for (int i = 0; i < (int)data.size(); i++) {
 		outdata << data[i] << endl;
 	}
