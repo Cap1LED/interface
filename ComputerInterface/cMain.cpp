@@ -33,10 +33,15 @@ EVT_BUTTON(105, cMain::OnClearClick)
 wxEND_EVENT_TABLE()
 
 
-
+/*
+	This is the constructor for the GUI. Each object within the GUI uses specific values to the starting values for the object.
+	Our GUI uses 5 modules for the LED types as well as a save, record, stop, and clear button. 
+	This GUI also uses a timer to update the temperature, current and power displays for each LED.
+	Finally, it uses a List Control Box which is used to display the data.
+	*/
 cMain::cMain() :wxFrame(nullptr, wxID_ANY, "SolarLED", wxPoint(30, 30), wxSize(700, 500)) {
 
-
+	
 	m_color1 = new wxSlider(this, 1, 0, 0, 100, wxPoint(410, 100), wxSize(260, 30), wxSL_HORIZONTAL);//3000k LED module
 	m_bright1 = new wxTextCtrl(this, 4, "Brightness", wxPoint(400, 130), wxSize(65, 30));
 	m_temp1 = new wxTextCtrl(this, 13, "Temp", wxPoint(470, 130), wxSize(65, 30));
