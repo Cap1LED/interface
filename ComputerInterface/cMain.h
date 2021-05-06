@@ -7,12 +7,12 @@ class cMain : public wxFrame
 {
 
 public:
-	cMain();
-	~cMain();
+	cMain(); // constructor
+	~cMain(); // deconstructor
 
 public:
 	wxSlider* m_color1 = nullptr;
-	wxSlider* m_color2 = nullptr;
+	wxSlider* m_color2 = nullptr; 
 	wxSlider* m_color3 = nullptr;
 	wxSlider* m_color4 = nullptr;
 	wxSlider* m_color5 = nullptr;

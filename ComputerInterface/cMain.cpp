@@ -84,7 +84,7 @@ cMain::cMain() :wxFrame(nullptr, wxID_ANY, "SolarLED", wxPoint(30, 30), wxSize(7
         cout << "Fail to make connection" << endl;
     }
     
-	m_timer->Start(100); // 1 second interval
+	m_timer->Start(100); // 100 millisecond interval
 	m_bright1->SetValue(wxString::Format(wxT("%d"), 0));
 	m_bright2->SetValue(wxString::Format(wxT("%d"), 0));
 	m_bright3->SetValue(wxString::Format(wxT("%d"), 0));
